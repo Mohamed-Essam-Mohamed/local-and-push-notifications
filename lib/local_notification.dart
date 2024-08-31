@@ -92,7 +92,7 @@ class LocalNotification {
     tz.setLocalLocation(tz.getLocation(currentTimeZone));
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, 48);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, 16);
 
     await fLNotification.zonedSchedule(
       2,
