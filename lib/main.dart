@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:notification_app/local_notification.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalNotification.init();
   runApp(const MyApp());
 }
 
@@ -32,7 +35,37 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.deepPurple,
       ),
       body: Column(
-        children: [],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          //? basic notification
+          ListTile(
+            onTap: () async {
+              await LocalNotification.showBasicNotification();
+            },
+            leading: const Icon(Icons.notifications),
+            title: const Text("Basic Notification"),
+            trailing: IconButton(
+              onPressed: () async {
+                LocalNotification.cancelNotification(0);
+              },
+              icon: const Icon(Icons.cancel, color: Colors.red),
+            ),
+          ),
+          //? repeated notification
+          ListTile(
+            onTap: () async {
+              await LocalNotification.showRepeatedNotification();
+            },
+            leading: const Icon(Icons.notifications),
+            title: const Text("Repeated Notification"),
+            trailing: IconButton(
+              onPressed: () {
+                LocalNotification.cancelNotification(1);
+              },
+              icon: const Icon(Icons.cancel, color: Colors.red),
+            ),
+          ),
+        ],
       ),
     );
   }
