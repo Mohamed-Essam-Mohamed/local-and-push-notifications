@@ -1,4 +1,9 @@
+//? flutter_local_notifications => package
+//? timezone => package   use this package to inti scheduled notification. doc this package in flutter_local_notifications
+//? flutter_timezone => package   use this package to get location timezone
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -56,6 +61,38 @@ class LocalNotification {
       'body',
       RepeatInterval.everyMinute,
       notificationDetails,
+    );
+  }
+
+  //? scheduled notification
+  static Future<void> showScheduledNotification() async {
+    NotificationDetails notificationDetails = const NotificationDetails(
+      android: AndroidNotificationDetails(
+        'id 3',
+        'Scheduled Notification',
+        //? show when app is in foreground
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    );
+    tz.initializeTimeZones();
+    //! get location by flutter_timezone
+    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+    //! update location in package timezone
+    tz.setLocalLocation(tz.getLocation(currentTimeZone));
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, 48);
+
+    await fLNotification.zonedSchedule(
+      2,
+      'Scheduled Notification',
+      'body',
+      // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
+      scheduledDate,
+      notificationDetails,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
