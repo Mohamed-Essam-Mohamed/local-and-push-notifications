@@ -1,4 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotification {
   static FlutterLocalNotificationsPlugin fLNotification =
@@ -16,6 +18,7 @@ class LocalNotification {
     );
   }
 
+  //? basic notification
   static Future<void> showBasicNotification() async {
     NotificationDetails notificationDetails = const NotificationDetails(
       android: AndroidNotificationDetails(
@@ -35,11 +38,12 @@ class LocalNotification {
     );
   }
 
+  //? repeated notification
   static Future<void> showRepeatedNotification() async {
     NotificationDetails notificationDetails = const NotificationDetails(
       android: AndroidNotificationDetails(
-        'id 1',
-        'basic Notification',
+        'id 2',
+        'repeated Notification',
         //? show when app is in foreground
         importance: Importance.max,
         priority: Priority.high,
