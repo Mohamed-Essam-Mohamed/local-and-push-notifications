@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notification_app/local_notification.dart';
+import 'package:notification_app/notification_details_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +25,42 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getDataNotification();
+  }
+
+  void _getDataNotification() {
+    LocalNotification.controller.stream.listen(
+      (event) {
+        print("event${event.id}");
+        print(event.payload);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NotificationDetailsScreen(details: event),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    LocalNotification.controller.close();
+  }
 
   @override
   Widget build(BuildContext context) {

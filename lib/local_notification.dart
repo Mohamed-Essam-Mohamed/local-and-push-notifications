@@ -2,6 +2,8 @@
 //? timezone => package   use this package to inti scheduled notification. doc this package in flutter_local_notifications
 //? flutter_timezone => package   use this package to get location timezone
 
+import 'dart:async';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -10,7 +12,14 @@ import 'package:timezone/timezone.dart' as tz;
 class LocalNotification {
   static FlutterLocalNotificationsPlugin fLNotification =
       FlutterLocalNotificationsPlugin();
-  static onTap(NotificationResponse details) {}
+  //! connected onTap notification to ui screen
+  //?  1
+  static StreamController<NotificationResponse> controller = StreamController();
+  //?  2
+  static onTap(NotificationResponse details) {
+    controller.add(details);
+  }
+
   static Future init() async {
     InitializationSettings initSettings = const InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
@@ -39,7 +48,7 @@ class LocalNotification {
       'Basic Notification',
       'body',
       notificationDetails,
-      payload: 'data',
+      payload: 'data Basic Notification',
     );
   }
 
@@ -61,6 +70,7 @@ class LocalNotification {
       'body',
       RepeatInterval.everyMinute,
       notificationDetails,
+      payload: 'data Repeated Notification',
     );
   }
 
@@ -93,6 +103,7 @@ class LocalNotification {
       notificationDetails,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+      payload: 'data Scheduled Notification',
     );
   }
 
