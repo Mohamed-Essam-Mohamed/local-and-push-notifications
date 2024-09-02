@@ -76,6 +76,7 @@ class LocalNotification {
 
   //? scheduled notification
   static Future<void> showScheduledNotification() async {
+    print('call showScheduledNotification');
     NotificationDetails notificationDetails = const NotificationDetails(
       android: AndroidNotificationDetails(
         'id 3',
@@ -92,7 +93,7 @@ class LocalNotification {
     tz.setLocalLocation(tz.getLocation(currentTimeZone));
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, 16);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, 55);
 
     await fLNotification.zonedSchedule(
       2,
@@ -107,7 +108,47 @@ class LocalNotification {
     );
   }
 
+  //? cancel notification
   static void cancelNotification(int id) async {
     await fLNotification.cancel(id);
+  }
+
+  //! work manager service for notification
+  //? scheduled notification using work manager 9 pm daily notification
+
+  static Future<void> showDailyScheduledNotification() async {
+    print("call show Daily Scheduled Notification");
+    NotificationDetails notificationDetails = const NotificationDetails(
+      android: AndroidNotificationDetails(
+        'id 4',
+        'daily Scheduled Notification',
+        //? show when app is in foreground
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    );
+    tz.initializeTimeZones();
+    //! get location by flutter_timezone
+    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+    //! update location in package timezone
+    tz.setLocalLocation(tz.getLocation(currentTimeZone));
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    await fLNotification.zonedSchedule(
+      3,
+      'Daily Scheduled Notification',
+      'Daily body Notification',
+      // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
+      scheduledDate,
+      notificationDetails,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      payload: 'data Scheduled Notification',
+    );
   }
 }
