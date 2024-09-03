@@ -12,7 +12,7 @@ import 'package:timezone/timezone.dart' as tz;
 class LocalNotification {
   static FlutterLocalNotificationsPlugin fLNotification =
       FlutterLocalNotificationsPlugin();
-  //! connected onTap notification to ui screen
+  //! connected onTap function notification to ui screen
   //?  1
   static StreamController<NotificationResponse> controller = StreamController();
   //?  2
