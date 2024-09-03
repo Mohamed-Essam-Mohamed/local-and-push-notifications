@@ -1,13 +1,21 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:notification_app/firebase_options.dart';
 import 'package:notification_app/local_notification.dart';
 import 'package:notification_app/notification_details_screen.dart';
+import 'package:notification_app/push_notification.dart';
 import 'package:notification_app/work_manager_serivce.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  PushNotification pushNotification = PushNotification();
   await Future.wait([
     LocalNotification.init(),
     WorkManagerService().init(),
+    pushNotification.initialize(),
   ]);
 
   runApp(const MyApp());
