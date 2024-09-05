@@ -19,8 +19,12 @@ class PushNotification {
       log("token: $token");
     });
     //! create topic for notification
-    messaging.subscribeToTopic("all").then((value) {
-      log("create topic for notification");
+    // messaging.subscribeToTopic("all").then((value) {
+    //   log("create topic for notification");
+    // });
+    //! un subscribe from topic
+    messaging.unsubscribeFromTopic("all").then((value) {
+      log("un subscribe from topic");
     });
 
     log("token: $token");
