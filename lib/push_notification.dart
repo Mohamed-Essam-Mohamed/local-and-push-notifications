@@ -14,6 +14,15 @@ class PushNotification {
     await onBackgroundMessageFunction();
     await onMessageFunction();
     token = await messaging.getToken();
+    //! on token refresh
+    messaging.onTokenRefresh.listen((token) {
+      log("token: $token");
+    });
+    //! create topic for notification
+    messaging.subscribeToTopic("all").then((value) {
+      log("create topic for notification");
+    });
+
     log("token: $token");
   }
 
