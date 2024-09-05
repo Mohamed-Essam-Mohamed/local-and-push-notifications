@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //? basic notification
           ListTile(
             onTap: () async {
-              await LocalNotification.showBasicNotification();
+              // await LocalNotification.showBasicNotification();
             },
             leading: const Icon(Icons.notifications),
             title: const Text("Basic Notification"),

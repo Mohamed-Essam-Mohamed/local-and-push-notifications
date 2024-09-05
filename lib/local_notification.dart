@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -33,7 +34,8 @@ class LocalNotification {
   }
 
   //? basic notification
-  static Future<void> showBasicNotification() async {
+  static Future<void> showBasicNotification(
+      {required RemoteMessage message}) async {
     NotificationDetails notificationDetails = const NotificationDetails(
       android: AndroidNotificationDetails(
         'id 1',
@@ -45,8 +47,8 @@ class LocalNotification {
     );
     await fLNotification.show(
       0,
-      'Basic Notification',
-      'body',
+      message.notification!.title,
+      message.notification!.body,
       notificationDetails,
       payload: 'data Basic Notification',
     );
